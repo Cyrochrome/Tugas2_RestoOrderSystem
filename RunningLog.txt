@@ -1,0 +1,101 @@
+[cyrochrome@nexus Tugas1_RestoOrderSystem]$  /usr/bin/env /home/cyrochrome/.vscode/extensions/redhat.java-1.57.0-linux-x64/jre/25.0.4.1-linux-x86_64/bin/java -XX:+ShowCodeDetailsInExceptionMessages -cp /home/cyrochrome/.config/Code/User/workspaceStorage/0664a97bdd2e69378ec3ad2ac9ad8cf0/redhat.java/jdt_ws/Tugas1_RestoOrderSystem_247d5d34/bin Main 
+Selamat Datang di Cafe Atas Tebing!~~~
+Silahkan pilih menu yang tersedia:
+!----------------------------------------------------!
+Makanan:
+1. Egg & Butter Toast           : Rp 20000
+2. Double Cheeseburger          : Rp 30000
+3. Margherita Pizza (1 slice)   : Rp 25000
+4. Miso Ramen                   : Rp 27000
+Minuman:
+5. Iced Tea             : Rp 12000
+6. Iced Latte           : Rp 18000
+7. Iced Black Coffee    : Rp 16000
+8. Iced Cappuccino      : Rp 17000
+!----------------------------------------------------!
+
+Masukkan nomor menu ke-1 (1-8): 1l
+Input tidak valid. Masukkan nomor menu (1-8): 5
+Masukkan jumlah pesanan: 2
+
+Keranjang Pesanan:
+!----------------------------------------------------!
+1. Iced Tea : 12000 x 2 = Rp 24000
+Subtotal: Rp 24000
+!----------------------------------------------------!
+Tambah pesanan lagi? (1 = Ya, 0 = Tidak): 1
+Silahkan pilih menu yang tersedia:
+!----------------------------------------------------!
+Makanan:
+1. Egg & Butter Toast           : Rp 20000
+2. Double Cheeseburger          : Rp 30000
+3. Margherita Pizza (1 slice)   : Rp 25000
+4. Miso Ramen                   : Rp 27000
+Minuman:
+5. Iced Tea             : Rp 12000
+6. Iced Latte           : Rp 18000
+7. Iced Black Coffee    : Rp 16000
+8. Iced Cappuccino      : Rp 17000
+!----------------------------------------------------!
+
+Masukkan nomor menu ke-2 (1-8): 1
+Masukkan jumlah pesanan: 2
+
+Keranjang Pesanan:
+!----------------------------------------------------!
+1. Iced Tea : 12000 x 2 = Rp 24000
+2. Egg & Butter Toast : 20000 x 2 = Rp 40000
+Subtotal: Rp 64000
+!----------------------------------------------------!
+Tambah pesanan lagi? (1 = Ya, 0 = Tidak): 1
+Silahkan pilih menu yang tersedia:
+!----------------------------------------------------!
+Makanan:
+1. Egg & Butter Toast           : Rp 20000
+2. Double Cheeseburger          : Rp 30000
+3. Margherita Pizza (1 slice)   : Rp 25000
+4. Miso Ramen                   : Rp 27000
+Minuman:
+5. Iced Tea             : Rp 12000
+6. Iced Latte           : Rp 18000
+7. Iced Black Coffee    : Rp 16000
+8. Iced Cappuccino      : Rp 17000
+!----------------------------------------------------!
+
+Masukkan nomor menu ke-3 (1-8): 3
+Masukkan jumlah pesanan: 1
+
+Keranjang Pesanan:
+!----------------------------------------------------!
+1. Iced Tea : 12000 x 2 = Rp 24000
+2. Egg & Butter Toast : 20000 x 2 = Rp 40000
+3. Margherita Pizza (1 slice) : 25000 x 1 = Rp 25000
+Subtotal: Rp 89000
+!----------------------------------------------------!
+Tambah pesanan lagi? (1 = Ya, 0 = Tidak): 0
+Selamat! Anda mendapatkan promo BOGO untuk minuman. Silahkan pilih minuman yang ada di keranjang yang ingin Anda dapatkan gratis:
+!----------------------------------------------------!
+1. Iced Tea
+!----------------------------------------------------!
+Masukkan nomor menu yang ingin Anda dapatkan gratis (1-4): 1
+
+Struk Pesanan:
+!----------------------------------------------------!
+
+Keranjang Pesanan:
+!----------------------------------------------------!
+1. Iced Tea : 12000 x 2 = Rp 24000
+         (Gratis: 1)
+2. Egg & Butter Toast : 20000 x 2 = Rp 40000
+3. Margherita Pizza (1 slice) : 25000 x 1 = Rp 25000
+!----------------------------------------------------!
+Subtotal                        : Rp 89000
+Diskon                          : - Rp 0
+Nilai Transaksi Murni           : Rp 89000
+Biaya Layanan                   : + Rp 20000
+Dasar Pengenaan Pajak           : Rp 109000
+Pajak                           : + Rp 10900
+!----------------------------------------------------!
+Total Akhir                     : Rp 119900
+!----------------------------------------------------!
+[cyrochrome@nexus Tugas1_RestoOrderSystem]$ 
