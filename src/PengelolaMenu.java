@@ -4,7 +4,6 @@ public class PengelolaMenu {
     private Menu[] daftarMenu;
 
     public PengelolaMenu() {
-        // Minimal 4 makanan dan 4 minuman sesuai instruksi soal
         this.daftarMenu = new Menu[8];
         this.daftarMenu[0] = new Menu("Egg & Butter Toast", 20000, Kategori.MAKANAN);
         this.daftarMenu[1] = new Menu("Double Cheeseburger", 30000, Kategori.MAKANAN);
@@ -16,49 +15,71 @@ public class PengelolaMenu {
         this.daftarMenu[7] = new Menu("Iced Cappuccino", 17000, Kategori.MINUMAN);
     }
 
-    public Menu[] getDaftarMenu() {
+    public Menu[] lihatDaftarMenu() {
         return this.daftarMenu;
     }
 
-    // Menampilkan menu dikelompokkan berdasarkan kategori (Permintaan Soal)
-    public void tampilkanMenuDikelompokkan() {
-        System.out.println("\n===== DAFTAR MENU RESTORAN =====");
-        System.out.println("[ MAKANAN ]");
-        for (int i = 0; i < daftarMenu.length; i++) {
-            if (daftarMenu[i].getKategoriMenu() == Kategori.MAKANAN) {
-                System.out.printf("%d. %-30s | Rp %,d\n", (i + 1), daftarMenu[i].getNamaMenu(), daftarMenu[i].getHargaMenu());
-            }
+    public Menu lihatMenuByIndex(int index) {
+        if (index < 0 || index >= this.daftarMenu.length) {
+            return null;
         }
-        System.out.println("\n[ MINUMAN ]");
-        for (int i = 0; i < daftarMenu.length; i++) {
-            if (daftarMenu[i].getKategoriMenu() == Kategori.MINUMAN) {
-                System.out.printf("%d. %-30s | Rp %,d\n", (i + 1), daftarMenu[i].getNamaMenu(), daftarMenu[i].getHargaMenu());
-            }
-        }
-        System.out.println("================================");
+        return this.daftarMenu[index];
     }
 
+    // Perbaikan append array (Ukuran array baru harus + 1)
     public void tambahMenu(String namaMenu, long hargaMenu, Kategori kategoriMenu) {
         Menu[] daftarMenuBaru = Arrays.copyOf(this.daftarMenu, this.daftarMenu.length + 1);
         daftarMenuBaru[this.daftarMenu.length] = new Menu(namaMenu, hargaMenu, kategoriMenu);
         this.daftarMenu = daftarMenuBaru;
     }
 
-    public void ubahHargaMenu(int index, long hargaBaru) {
-        if (index >= 0 && index < daftarMenu.length) {
-            daftarMenu[index].setHargaMenu(hargaBaru);
+    // Pintu masuk untuk update menu secara opsional (Builder Pattern)
+    public MenuUpdater updateMenu(int index) {
+        if (index < 0 || index >= this.daftarMenu.length) {
+            throw new IllegalArgumentException("Index menu tidak valid!");
         }
+        return new MenuUpdater(index);
     }
 
-    public void hapusMenu(int index) {
-        if (index < 0 || index >= daftarMenu.length) return;
-        
-        Menu[] daftarMenuBaru = new Menu[daftarMenu.length - 1];
-        int k = 0;
-        for (int i = 0; i < daftarMenu.length; i++) {
-            if (i == index) continue; // Lewati indeks yang dihapus
-            daftarMenuBaru[k++] = daftarMenu[i];
+    // Inner Class pembantu untuk menangani parameter opsional
+    public class MenuUpdater {
+        private final int index;
+        private String nama = null;
+        private Long harga = null; // Menggunakan Long (Object) agar bisa menampung null
+        private Kategori kategori = null;
+
+        public MenuUpdater(int index) {
+            this.index = index;
         }
-        this.daftarMenu = daftarMenuBaru;
+
+        public MenuUpdater denganNama(String nama) {
+            this.nama = nama;
+            return this;
+        }
+
+        public MenuUpdater denganHarga(long harga) {
+            this.harga = harga;
+            return this;
+        }
+
+        public MenuUpdater denganKategori(Kategori kategori) {
+            this.kategori = kategori;
+            return this;
+        }
+
+        // Method eksekusi akhir untuk menyimpan perubahan
+        public void simpan() {
+            Menu menuTarget = daftarMenu[index];
+            
+            if (this.nama != null) {
+                menuTarget.setNamaMenu(this.nama);
+            }
+            if (this.harga != null) {
+                menuTarget.setHargaMenu(this.harga);
+            }
+            if (this.kategori != null) {
+                menuTarget.setKategoriMenu(this.kategori);
+            }
+        }
     }
 }
