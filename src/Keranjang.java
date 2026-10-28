@@ -18,6 +18,28 @@ public class Keranjang {
         return this.daftarPesanan[index];
     }
 
+    public Pesanan[] getDaftarPesananByKategori(Kategori kategori) {
+
+        int count = 0;
+        for (Pesanan pesanan : this.daftarPesanan) {
+            if (pesanan.getMenu().getKategoriMenu() == kategori) {
+                count++;
+            }
+        }
+
+        Pesanan[] daftarPesananFiltered = new Pesanan[count];
+
+        int index = 0;
+        for (Pesanan pesanan : this.daftarPesanan) {
+            if (pesanan.getMenu().getKategoriMenu() == kategori) {
+                daftarPesananFiltered[index] = pesanan;
+                index++;
+            }
+        }
+
+        return daftarPesananFiltered;
+    }
+
     public void tambahPesanan(Menu menu, int jumlah) {
         Pesanan[] daftarPesananBaru = Arrays.copyOf(this.daftarPesanan, this.daftarPesanan.length + 1);
         daftarPesananBaru[this.daftarPesanan.length] = new Pesanan(menu, jumlah);
@@ -45,13 +67,13 @@ public class Keranjang {
         int nomor = 1;
         for (Pesanan pesanan : this.daftarPesanan) {
 
-            System.out.println(nomor + ". " + pesanan.menu.getNamaMenu());
+            System.out.println(nomor + ". " + pesanan.getMenu().getNamaMenu());
 
-            System.out.println("\tHarga Total: Rp " + pesanan.menu.getHargaMenu()
-                    + " * " + pesanan.jumlah + " : Rp " + pesanan.hitungTotalHarga());
+            System.out.println("\tHarga Total: Rp " + pesanan.getMenu().getHargaMenu()
+                    + " * " + pesanan.getJumlah() + " : Rp " + pesanan.hitungTotalHarga());
 
-            if (pesanan.jumlahGratis > 0) {
-                System.out.println("\t(Gratis BOGO: " + pesanan.jumlahGratis + " item)");
+            if (pesanan.getJumlahGratis() > 0) {
+                System.out.println("\t(Gratis BOGO: " + pesanan.getJumlahGratis() + " item)");
             }
             nomor++;
         }

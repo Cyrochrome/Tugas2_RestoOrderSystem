@@ -52,6 +52,19 @@ public class Main {
         System.out.println("Selamat Datang Pembeli Tercinta di Cafe Atas Tebing!~~~");
 
         prosesInputMenu(scanner, pengelolaMenu, keranjang);
+
+        final long SUBTOTAL = keranjang.hitungSubtotal();
+        long nilaiMurniTransaksi = SUBTOTAL;
+
+        long nominalDiskon = SUBTOTAL > DISKON1_MIN ? SUBTOTAL * DISKON1 / 100 : 0;
+        nilaiMurniTransaksi -= nominalDiskon;
+
+        long dasarPengenaanPajak = nilaiMurniTransaksi + BIAYA_LAYANAN; 
+        long nominalPajak = SUBTOTAL * PAJAK / 100;
+        long totalAkhir = dasarPengenaanPajak + nominalPajak;
+
+        
+
     }
 
     private static void prosesInputMenu(Scanner scanner, PengelolaMenu pengelolaMenu, Keranjang keranjang) {

@@ -30,17 +30,17 @@ public class PengelolaMenu {
             }
         }
         
-        Menu[] menuFiltered = new Menu[count];
+        Menu[] daftarMenuFiltered = new Menu[count];
         
         int index = 0;
         for (Menu menu : this.daftarMenu) {
             if (menu.getKategoriMenu() == kategori) {
-                menuFiltered[index] = menu;
+                daftarMenuFiltered[index] = menu;
                 index++;
             }
         }
 
-        return menuFiltered;
+        return daftarMenuFiltered;
     }
 
     public Menu getMenuByIndex(int index) {

@@ -21,15 +21,24 @@ public class Menu {
         return kategoriMenu;
     }
 
-    public void setNamaMenu(String namaMenu) {
+    public boolean setNamaMenu(String namaMenu) {
+        if (namaMenu == "" || namaMenu == null)
+            return false;
         this.namaMenu = namaMenu;
+        return true;
     }
 
-    public void setHargaMenu(long hargaMenu) {
+    public boolean setHargaMenu(long hargaMenu) {
+        if (hargaMenu <= 0)
+            return false;
         this.hargaMenu = hargaMenu;
+        return true;
     }
 
-    public void setKategoriMenu(Kategori kategoriMenu) {
+    public boolean setKategoriMenu(Kategori kategoriMenu) {
+        if (kategoriMenu == null)
+            return false;
         this.kategoriMenu = kategoriMenu;
+        return true;
     }
 }
