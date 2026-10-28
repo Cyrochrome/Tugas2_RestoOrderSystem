@@ -61,15 +61,15 @@ public class Main {
         System.out.println("Silahkan pilih menu yang tersedia:");
         System.out.println("!----------------------------------------------------!");
         System.out.println("Makanan:");
-        System.out.println("1. " + daftarMenu[0].namaMenu + "\t\t: Rp " + daftarMenu[0].hargaMenu);
-        System.out.println("2. " + daftarMenu[1].namaMenu + "\t\t: Rp " + daftarMenu[1].hargaMenu);
-        System.out.println("3. " + daftarMenu[2].namaMenu + "\t: Rp " + daftarMenu[2].hargaMenu);
-        System.out.println("4. " + daftarMenu[3].namaMenu + "\t\t\t: Rp " + daftarMenu[3].hargaMenu);
+        System.out.println("1. " + daftarMenu[0].getNamaMenu() + "\t\t: Rp " + daftarMenu[0].getHargaMenu());
+        System.out.println("2. " + daftarMenu[1].getNamaMenu() + "\t\t: Rp " + daftarMenu[1].getHargaMenu());
+        System.out.println("3. " + daftarMenu[2].getNamaMenu() + "\t: Rp " + daftarMenu[2].getHargaMenu());
+        System.out.println("4. " + daftarMenu[3].getNamaMenu() + "\t\t\t: Rp " + daftarMenu[3].getHargaMenu());
         System.out.println("Minuman:");
-        System.out.println("5. " + daftarMenu[4].namaMenu + "\t\t: Rp " + daftarMenu[4].hargaMenu);
-        System.out.println("6. " + daftarMenu[5].namaMenu + "\t\t: Rp " + daftarMenu[5].hargaMenu);
-        System.out.println("7. " + daftarMenu[6].namaMenu + "\t: Rp " + daftarMenu[6].hargaMenu);
-        System.out.println("8. " + daftarMenu[7].namaMenu + "\t: Rp " + daftarMenu[7].hargaMenu);
+        System.out.println("5. " + daftarMenu[4].getNamaMenu() + "\t\t: Rp " + daftarMenu[4].getHargaMenu());
+        System.out.println("6. " + daftarMenu[5].getNamaMenu() + "\t\t: Rp " + daftarMenu[5].getHargaMenu());
+        System.out.println("7. " + daftarMenu[6].getNamaMenu() + "\t: Rp " + daftarMenu[6].getHargaMenu());
+        System.out.println("8. " + daftarMenu[7].getNamaMenu() + "\t: Rp " + daftarMenu[7].getHargaMenu());
         System.out.println("!----------------------------------------------------!");
     }
 
@@ -88,7 +88,7 @@ public class Main {
             return;
         }
 
-        System.out.println("1. " + keranjang[0].menu.namaMenu + " : " + keranjang[0].menu.hargaMenu + " x "
+        System.out.println("1. " + keranjang[0].menu.getNamaMenu() + " : " + keranjang[0].menu.getHargaMenu() + " x "
                 + keranjang[0].jumlah + " = Rp " + keranjang[0].hitungTotalHarga());
         if (keranjang[0].jumlahGratis > 0) {
             System.out.println("\t (Gratis: " + keranjang[0].jumlahGratis + ")");
@@ -101,7 +101,7 @@ public class Main {
             return;
         }
 
-        System.out.println("2. " + keranjang[1].menu.namaMenu + " : " + keranjang[1].menu.hargaMenu + " x "
+        System.out.println("2. " + keranjang[1].menu.getNamaMenu() + " : " + keranjang[1].menu.getHargaMenu() + " x "
                 + keranjang[1].jumlah + " = Rp " + keranjang[1].hitungTotalHarga());
         if (keranjang[1].jumlahGratis > 0) {
             System.out.println("\t (Gratis: " + keranjang[1].jumlahGratis + ")");
@@ -114,7 +114,7 @@ public class Main {
             return;
         }
 
-        System.out.println("3. " + keranjang[2].menu.namaMenu + " : " + keranjang[2].menu.hargaMenu + " x "
+        System.out.println("3. " + keranjang[2].menu.getNamaMenu() + " : " + keranjang[2].menu.getHargaMenu() + " x "
                 + keranjang[2].jumlah + " = Rp " + keranjang[2].hitungTotalHarga());
         if (keranjang[2].jumlahGratis > 0) {
             System.out.println("\t (Gratis: " + keranjang[2].jumlahGratis + ")");
@@ -127,7 +127,7 @@ public class Main {
             return;
         }
 
-        System.out.println("4. " + keranjang[3].menu.namaMenu + " : " + keranjang[3].menu.hargaMenu + " x "
+        System.out.println("4. " + keranjang[3].menu.getNamaMenu() + " : " + keranjang[3].menu.getHargaMenu() + " x "
                 + keranjang[3].jumlah + " = Rp " + keranjang[3].hitungTotalHarga());
         if (keranjang[3].jumlahGratis > 0) {
             System.out.println("\t (Gratis: " + keranjang[3].jumlahGratis + ")");
@@ -233,17 +233,17 @@ public class Main {
             return;
         Pesanan[] minumanDalamKeranjang = new Pesanan[4];
 
-        if (keranjang[0] != null && keranjang[0].menu.kategoriMenu == Kategori.MINUMAN) {
+        if (keranjang[0] != null && keranjang[0].menu.getKategoriMenu() == Kategori.MINUMAN) {
             minumanDalamKeranjang[0] = keranjang[0];
         }
-        if (keranjang[1] != null && keranjang[1].menu.kategoriMenu == Kategori.MINUMAN) {
+        if (keranjang[1] != null && keranjang[1].menu.getKategoriMenu() == Kategori.MINUMAN) {
             if (minumanDalamKeranjang[0] == null) {
                 minumanDalamKeranjang[0] = keranjang[1];
             } else {
                 minumanDalamKeranjang[1] = keranjang[1];
             }
         }
-        if (keranjang[2] != null && keranjang[2].menu.kategoriMenu == Kategori.MINUMAN) {
+        if (keranjang[2] != null && keranjang[2].menu.getKategoriMenu() == Kategori.MINUMAN) {
             if (minumanDalamKeranjang[0] == null) {
                 minumanDalamKeranjang[0] = keranjang[2];
             } else if (minumanDalamKeranjang[1] == null) {
@@ -252,7 +252,7 @@ public class Main {
                 minumanDalamKeranjang[2] = keranjang[2];
             }
         }
-        if (keranjang[3] != null && keranjang[3].menu.kategoriMenu == Kategori.MINUMAN) {
+        if (keranjang[3] != null && keranjang[3].menu.getKategoriMenu() == Kategori.MINUMAN) {
             if (minumanDalamKeranjang[0] == null) {
                 minumanDalamKeranjang[0] = keranjang[3];
             } else if (minumanDalamKeranjang[1] == null) {
@@ -297,7 +297,7 @@ public class Main {
                 System.out.print("Slot menu tersebut kosong. Masukkan nomor menu (1-4): ");
                 continue;
             }
-            if (minumanDalamKeranjang[pilihanGratis - 1].menu.kategoriMenu != Kategori.MINUMAN) {
+            if (minumanDalamKeranjang[pilihanGratis - 1].menu.getKategoriMenu() != Kategori.MINUMAN) {
                 System.out.print("Menu tersebut bukan minuman. Masukkan nomor menu (1-4): ");
                 continue;
             }
@@ -315,14 +315,14 @@ public class Main {
                 "Selamat! Anda mendapatkan promo BOGO untuk minuman. Silahkan pilih minuman yang ada di keranjang yang ingin Anda dapatkan gratis:");
         System.out.println("!----------------------------------------------------!");
 
-        if (minumanDalamKeranjang[0] != null && minumanDalamKeranjang[0].menu.kategoriMenu == Kategori.MINUMAN)
-            System.out.println("1. " + minumanDalamKeranjang[0].menu.namaMenu);
-        if (minumanDalamKeranjang[1] != null && minumanDalamKeranjang[1].menu.kategoriMenu == Kategori.MINUMAN)
-            System.out.println("2. " + minumanDalamKeranjang[1].menu.namaMenu);
-        if (minumanDalamKeranjang[2] != null && minumanDalamKeranjang[2].menu.kategoriMenu == Kategori.MINUMAN)
-            System.out.println("3. " + minumanDalamKeranjang[2].menu.namaMenu);
-        if (minumanDalamKeranjang[3] != null && minumanDalamKeranjang[3].menu.kategoriMenu == Kategori.MINUMAN)
-            System.out.println("4. " + minumanDalamKeranjang[3].menu.namaMenu);
+        if (minumanDalamKeranjang[0] != null && minumanDalamKeranjang[0].menu.getKategoriMenu() == Kategori.MINUMAN)
+            System.out.println("1. " + minumanDalamKeranjang[0].menu.getNamaMenu());
+        if (minumanDalamKeranjang[1] != null && minumanDalamKeranjang[1].menu.getKategoriMenu() == Kategori.MINUMAN)
+            System.out.println("2. " + minumanDalamKeranjang[1].menu.getNamaMenu());
+        if (minumanDalamKeranjang[2] != null && minumanDalamKeranjang[2].menu.getKategoriMenu() == Kategori.MINUMAN)
+            System.out.println("3. " + minumanDalamKeranjang[2].menu.getNamaMenu());
+        if (minumanDalamKeranjang[3] != null && minumanDalamKeranjang[3].menu.getKategoriMenu() == Kategori.MINUMAN)
+            System.out.println("4. " + minumanDalamKeranjang[3].menu.getNamaMenu());
 
         System.out.println("!----------------------------------------------------!");
     }

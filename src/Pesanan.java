@@ -10,6 +10,6 @@ public class Pesanan {
     }
 
     public long hitungTotalHarga() {
-        return (menu.hargaMenu * jumlah);
+        return (menu.getHargaMenu() * jumlah);
     }
 }
