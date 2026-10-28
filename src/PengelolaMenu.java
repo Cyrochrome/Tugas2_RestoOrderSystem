@@ -82,4 +82,16 @@ public class PengelolaMenu {
             }
         }
     }
+
+    public void hapusMenu(int index) {
+        if (index < 0 || index >= daftarMenu.length) return;
+        
+        Menu[] daftarMenuBaru = new Menu[daftarMenu.length - 1];
+        int k = 0;
+        for (int i = 0; i < daftarMenu.length; i++) {
+            if (i == index) continue; // Lewati indeks yang dihapus
+            daftarMenuBaru[k++] = daftarMenu[i];
+        }
+        this.daftarMenu = daftarMenuBaru;
+    }
 }

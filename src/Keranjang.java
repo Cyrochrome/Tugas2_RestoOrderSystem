@@ -24,5 +24,15 @@ public class Keranjang {
         this.daftarPesanan = daftarPesananBaru;
     }
 
-    
+    public long hitungSubtotal() {
+        long subtotal = 0;
+        for (Pesanan pesanan : this.daftarPesanan) {
+            subtotal += pesanan.hitungTotalHarga();
+        }
+        return subtotal;
+    }
+
+    public void kosongkanKeranjang() {
+        this.daftarPesanan = new Pesanan[0];
+    }
 }
