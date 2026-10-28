@@ -1,28 +1,47 @@
 import java.util.Scanner;
 
-// Nama                 : Marshalinas Yustiawan      
-// NIM                  : 052817633
-// Program studi        : Sistem Informasi
-// Mata kuliah          : Pemrograman Berbasis Desktop
-
 public class Main {
     public static void main(String[] args) {
-        // Inisialisasi Scanner untuk membaca input user
+        boolean isAplikasiJalan = true;
+
         Scanner scanner = new Scanner(System.in);
 
-        // Inisialisasi daftar menu
-        Menu[] daftarMenu = new Menu[8];
-        daftarMenu[0] = new Menu("Egg & Butter Toast", 20000, Kategori.MAKANAN);
-        daftarMenu[1] = new Menu("Double Cheeseburger", 30000, Kategori.MAKANAN);
-        daftarMenu[2] = new Menu("Margherita Pizza (1 slice)", 25000, Kategori.MAKANAN);
-        daftarMenu[3] = new Menu("Miso Ramen", 27000, Kategori.MAKANAN);
-        daftarMenu[4] = new Menu("Iced Tea", 12000, Kategori.MINUMAN);
-        daftarMenu[5] = new Menu("Iced Latte", 18000, Kategori.MINUMAN);
-        daftarMenu[6] = new Menu("Iced Black Coffee", 16000, Kategori.MINUMAN);
-        daftarMenu[7] = new Menu("Iced Cappuccino", 17000, Kategori.MINUMAN);
+        PengelolaMenu pengelolaMenu = new PengelolaMenu();
 
-        // Inisialisasi keranjang pesanan (menggunakan Class Pesanan)
-        Pesanan[] keranjang = new Pesanan[4];
+        System.out.println("Selamat Datang di Cafe Atas Tebing!~~~");
+
+        while (isAplikasiJalan) {
+            System.out.println("\n=== MENU UTAMA ===");
+            System.out.println("!----------------------------------------------------!");
+            System.out.println("1. Masuk sebagai Pelanggan (Pesan Menu)");
+            System.out.println("2. Masuk sebagai Pemilik Restoran (Panel Admin)");
+            System.out.println("3. Keluar Aplikasi");
+            System.out.println("!----------------------------------------------------!");
+            System.out.print("Pilih menu (1/2/3): ");
+
+            String pilihanMenu = scanner.nextLine();
+
+            switch (pilihanMenu) {
+                case "1":
+                    prosesPelanggan(scanner, pengelolaMenu);
+                    break;
+                case "2":
+
+                    break;
+                case "3":
+                    System.out.println("Mematikan sistem... Terima kasih!");
+                    isAplikasiJalan = false; // Memutus loop utama
+                    break;
+                default:
+                    System.out.println("Input tidak valid! Silakan pilih 1, 2, atau 3.");
+                    break;
+            }
+        }
+        scanner.close();
+    }
+
+    public static void prosesPelanggan(Scanner scanner, PengelolaMenu pengelolaMenu) {
+        Keranjang keranjang = new Keranjang();
 
         final int PAJAK = 10; // 10% dari total harga
         final int DISKON1 = 10; // 10% dari total harga jika total harga > 100.000
@@ -30,360 +49,136 @@ public class Main {
         final long BOGO_MIN = 50000; // minimal total harga untuk dapat promo BOGO
         final long BIAYA_LAYANAN = 20000; // biaya layanan
 
-        System.out.println("Selamat Datang di Cafe Atas Tebing!~~~");
+        System.out.println("Selamat Datang Pembeli Tercinta di Cafe Atas Tebing!~~~");
 
-        prosesInputMenu(scanner, daftarMenu, keranjang);
-
-        prosesPerhitunganDanCetakStruk(scanner, keranjang, DISKON1, DISKON1_MIN, BIAYA_LAYANAN, PAJAK, BOGO_MIN);
+        prosesInputMenu(scanner, pengelolaMenu, keranjang);
     }
 
-    /**
-     * Method ini digunakan untuk memproses input menu dari user.
-     * Sengaja dipisah agar method main tidak terlalu panjang.
-     */
-    private static void prosesInputMenu(Scanner scanner, Menu[] daftarMenu, Pesanan[] keranjang) {
-        boolean lanjutInput = true;
+    private static void prosesInputMenu(Scanner scanner, PengelolaMenu pengelolaMenu, Keranjang keranjang) {
+        boolean isLanjutInput = true;
 
-        if (lanjutInput)
-            lanjutInput = inputMenu(scanner, 0, keranjang, daftarMenu);
-        if (lanjutInput)
-            lanjutInput = inputMenu(scanner, 1, keranjang, daftarMenu);
-        if (lanjutInput)
-            lanjutInput = inputMenu(scanner, 2, keranjang, daftarMenu);
-        if (lanjutInput)
-            inputMenu(scanner, 3, keranjang, daftarMenu);
-    }
+        Menu[] daftarMenuMakanan = pengelolaMenu.getDaftarMenuByKategori(Kategori.MAKANAN);
+        Menu[] daftarMenuMinuman = pengelolaMenu.getDaftarMenuByKategori(Kategori.MINUMAN);
 
-    /**
-     * Method ini digunakan untuk menampilkan daftar menu yang tersedia.
-     */
-    private static void tampilkanMenu(Menu[] daftarMenu) {
-        System.out.println("Silahkan pilih menu yang tersedia:");
-        System.out.println("!----------------------------------------------------!");
-        System.out.println("Makanan:");
-        System.out.println("1. " + daftarMenu[0].getNamaMenu() + "\t\t: Rp " + daftarMenu[0].getHargaMenu());
-        System.out.println("2. " + daftarMenu[1].getNamaMenu() + "\t\t: Rp " + daftarMenu[1].getHargaMenu());
-        System.out.println("3. " + daftarMenu[2].getNamaMenu() + "\t: Rp " + daftarMenu[2].getHargaMenu());
-        System.out.println("4. " + daftarMenu[3].getNamaMenu() + "\t\t\t: Rp " + daftarMenu[3].getHargaMenu());
-        System.out.println("Minuman:");
-        System.out.println("5. " + daftarMenu[4].getNamaMenu() + "\t\t: Rp " + daftarMenu[4].getHargaMenu());
-        System.out.println("6. " + daftarMenu[5].getNamaMenu() + "\t\t: Rp " + daftarMenu[5].getHargaMenu());
-        System.out.println("7. " + daftarMenu[6].getNamaMenu() + "\t: Rp " + daftarMenu[6].getHargaMenu());
-        System.out.println("8. " + daftarMenu[7].getNamaMenu() + "\t: Rp " + daftarMenu[7].getHargaMenu());
-        System.out.println("!----------------------------------------------------!");
-    }
-
-    /**
-     * Method ini digunakan untuk menampilkan isi keranjang pesanan.
-     */
-    public static void tampilkanKeranjang(Pesanan[] keranjang, boolean isStruk) {
-        final long SUBTOTAL = hitungSubtotal(keranjang);
-
-        System.out.println("\nKeranjang Pesanan:");
-        System.out.println("!----------------------------------------------------!");
-
-        if (keranjang[0] == null) {
-            System.out.println("Keranjang Anda masih kosong.");
+        while (isLanjutInput) {
+            System.out.println("Silahkan pilih kategori Daftar Menu (1 atau 2):");
             System.out.println("!----------------------------------------------------!");
-            return;
-        }
-
-        System.out.println("1. " + keranjang[0].menu.getNamaMenu() + " : " + keranjang[0].menu.getHargaMenu() + " x "
-                + keranjang[0].jumlah + " = Rp " + keranjang[0].hitungTotalHarga());
-        if (keranjang[0].jumlahGratis > 0) {
-            System.out.println("\t (Gratis: " + keranjang[0].jumlahGratis + ")");
-        }
-        if (isStruk == false && keranjang[0] != null && keranjang[1] == null && keranjang[2] == null
-                && keranjang[3] == null)
-            System.out.println("Subtotal: Rp " + SUBTOTAL);
-        if (keranjang[1] == null) {
+            System.out.println("1. MAKANAN");
+            System.out.println("2. MINUMAN");
             System.out.println("!----------------------------------------------------!");
-            return;
-        }
 
-        System.out.println("2. " + keranjang[1].menu.getNamaMenu() + " : " + keranjang[1].menu.getHargaMenu() + " x "
-                + keranjang[1].jumlah + " = Rp " + keranjang[1].hitungTotalHarga());
-        if (keranjang[1].jumlahGratis > 0) {
-            System.out.println("\t (Gratis: " + keranjang[1].jumlahGratis + ")");
-        }
-        if (isStruk == false && keranjang[0] != null && keranjang[1] != null && keranjang[2] == null
-                && keranjang[3] == null)
-            System.out.println("Subtotal: Rp " + SUBTOTAL);
-        if (keranjang[2] == null) {
-            System.out.println("!----------------------------------------------------!");
-            return;
-        }
+            String pilihanKategori = scanner.nextLine();
 
-        System.out.println("3. " + keranjang[2].menu.getNamaMenu() + " : " + keranjang[2].menu.getHargaMenu() + " x "
-                + keranjang[2].jumlah + " = Rp " + keranjang[2].hitungTotalHarga());
-        if (keranjang[2].jumlahGratis > 0) {
-            System.out.println("\t (Gratis: " + keranjang[2].jumlahGratis + ")");
-        }
-        if (isStruk == false && keranjang[0] != null && keranjang[1] != null && keranjang[2] != null
-                && keranjang[3] == null)
-            System.out.println("Subtotal: Rp " + SUBTOTAL);
-        if (keranjang[3] == null) {
-            System.out.println("!----------------------------------------------------!");
-            return;
-        }
+            Menu[] targetArray;
+            String labelKategori;
 
-        System.out.println("4. " + keranjang[3].menu.getNamaMenu() + " : " + keranjang[3].menu.getHargaMenu() + " x "
-                + keranjang[3].jumlah + " = Rp " + keranjang[3].hitungTotalHarga());
-        if (keranjang[3].jumlahGratis > 0) {
-            System.out.println("\t (Gratis: " + keranjang[3].jumlahGratis + ")");
-        }
-        if (isStruk == false)
-            System.out.println("Subtotal: Rp " + SUBTOTAL);
+            switch (pilihanKategori) {
+                case "1":
+                    targetArray = daftarMenuMakanan;
+                    labelKategori = "MAKANAN";
+                    break;
+                case "2":
+                    targetArray = daftarMenuMinuman;
+                    labelKategori = "MINUMAN";
+                    break;
+                default:
+                    System.out.println("Input tidak valid! Silakan pilih 1 atau 2.");
+                    continue;
+            }
 
-        System.out.println("!----------------------------------------------------!");
+            renderDaftarMenu(targetArray, labelKategori);
+            keranjang.renderKeranjang(false);
+
+            int pilihan = 0;
+            boolean isMenuValid = false;
+
+            while (!isMenuValid) {
+                System.out.print("Silahkan pilih Menu (1-" + targetArray.length + "): ");
+
+                if (!scanner.hasNextInt()) {
+                    System.out.println("Error: Masukkan angka!");
+                    scanner.next(); // Buang input ampas
+                    continue;
+                }
+
+                pilihan = scanner.nextInt();
+
+                // Validasi batas rentang dinamis
+                if (pilihan < 1 || pilihan > targetArray.length) {
+                    System.out.println("Error: Pilihan di luar rentang!");
+                    continue;
+                }
+                isMenuValid = true;
+            }
+            scanner.nextLine(); // Sapu sisa "Enter" dari nextInt()
+
+            Menu menuYangDipilih = targetArray[pilihan - 1];
+
+            int qty = 0;
+            boolean isQtyValid = false;
+            while (!isQtyValid) {
+                System.out.print("Masukkan jumlah pesanan untuk " + menuYangDipilih.getNamaMenu() + ": ");
+
+                if (!scanner.hasNextInt()) {
+                    System.out.println("Error: Masukkan angka bulat!");
+                    scanner.next();
+                    continue;
+                }
+
+                qty = scanner.nextInt();
+                if (qty <= 0) {
+                    System.out.println("Error: Jumlah minimal 1!");
+                    continue;
+                }
+                isQtyValid = true;
+            }
+            scanner.nextLine(); // Sapu sisa "Enter" lagi
+
+            keranjang.tambahPesanan(menuYangDipilih, qty);
+
+            System.out
+                    .println(">> Berhasil menambahkan " + qty + " " + menuYangDipilih.getNamaMenu() + " ke keranjang!");
+
+            keranjang.renderKeranjang(false);
+
+            int lanjut = -1;
+            boolean isLanjutValid = false;
+
+            while (!isLanjutValid) {
+                System.out.print("\nTambah pesanan lagi? (1 = Ya, 0 = Tidak): ");
+
+                if (!scanner.hasNextInt()) {
+                    System.out.println("Error: Masukkan angka 1 atau 0!");
+                    scanner.next(); // Buang input ampas
+                    continue;
+                }
+
+                lanjut = scanner.nextInt();
+
+                if (lanjut != 1 && lanjut != 0) {
+                    System.out.println("Error: Pilihan hanya 1 atau 0!");
+                    continue;
+                }
+                isLanjutValid = true;
+            }
+            scanner.nextLine();
+
+            if (lanjut == 0) {
+                isLanjutInput = false; // Menghentikan loop pemesanan utama
+            }
+        }
     }
 
-    private static void tampilkanKeranjang(Pesanan[] keranjang) {
-        tampilkanKeranjang(keranjang, false);
-    }
-
-    /**
-     * Method inputMenu ini dibuat untuk menghindari duplikasi kode input menu.
-     */
-    private static boolean inputMenu(Scanner scanner, int index, Pesanan[] keranjang, Menu[] daftarMenu) {
-        int pilihan = 0;
-        int qty = 0;
-        boolean validInput = false;
-
-        tampilkanMenu(daftarMenu);
-
-        System.out.print("\nMasukkan nomor menu ke-" + (index + 1) + " (1-8): ");
-        while (!validInput) {
-            if (!scanner.hasNextInt()) {
-                System.out.print("Input tidak valid. Masukkan nomor menu (1-8): ");
-                scanner.next();
-                continue;
-            }
-
-            pilihan = scanner.nextInt();
-            if (pilihan < 1 || pilihan > 8) {
-                System.out.print("Input tidak valid. Masukkan nomor menu (1-8): ");
-                continue;
-            }
-            validInput = true;
-        }
-        validInput = false;
-
-        System.out.print("Masukkan jumlah pesanan: ");
-        while (!validInput) {
-            if (!scanner.hasNextInt()) {
-                System.out.print("Input harus berupa angka bulat. Masukkan jumlah pesanan: ");
-                scanner.next();
-                continue;
-            }
-
-            qty = scanner.nextInt();
-            if (qty <= 0) {
-                System.out.print("Jumlah pesanan harus lebih dari 0. Masukkan jumlah pesanan: ");
-                continue;
-            }
-            validInput = true;
-        }
-        validInput = false;
-
-        keranjang[index] = new Pesanan(daftarMenu[pilihan - 1], qty);
-
-        tampilkanKeranjang(keranjang);
-
-        if (index == 3) {
-            System.out.println("Keranjang sudah penuh, tidak bisa menambah pesanan lagi.");
-            return false;
-        }
-
-        System.out.print("Tambah pesanan lagi? (1 = Ya, 0 = Tidak): ");
-        while (!validInput) {
-            if (!scanner.hasNextInt()) {
-                System.out.print("Input tidak valid. Tambah pesanan lagi? (1 = Ya, 0 = Tidak): ");
-                scanner.next();
-                continue;
-            }
-            int lanjut = scanner.nextInt();
-            if (lanjut != 1 && lanjut != 0) {
-                System.out.print("Input tidak valid. Tambah pesanan lagi? (1 = Ya, 0 = Tidak): ");
-                continue;
-            }
-            if (lanjut == 0)
-                return false;
-            validInput = true;
-        }
-
-        return true;
-    }
-
-    /**
-     * Perhitungan SUBTOTAL dibikin dengan paradigma functional programming.
-     */
-    private static long hitungSubtotal(Pesanan[] keranjang) {
-        return (keranjang[0] != null ? keranjang[0].hitungTotalHarga() : 0)
-                + (keranjang[1] != null ? keranjang[1].hitungTotalHarga() : 0)
-                + (keranjang[2] != null ? keranjang[2].hitungTotalHarga() : 0)
-                + (keranjang[3] != null ? keranjang[3].hitungTotalHarga() : 0);
-    }
-
-    /**
-     * Perhitungan promo BOGO dibikin dengan paradigma functional programming.
-     */
-    private static void promoBogo(Scanner scanner, long BOGO_MIN, long SUBTOTAL, Pesanan[] keranjang) {
-        if (SUBTOTAL <= BOGO_MIN)
-            return;
-        Pesanan[] minumanDalamKeranjang = new Pesanan[4];
-
-        if (keranjang[0] != null && keranjang[0].menu.getKategoriMenu() == Kategori.MINUMAN) {
-            minumanDalamKeranjang[0] = keranjang[0];
-        }
-        if (keranjang[1] != null && keranjang[1].menu.getKategoriMenu() == Kategori.MINUMAN) {
-            if (minumanDalamKeranjang[0] == null) {
-                minumanDalamKeranjang[0] = keranjang[1];
-            } else {
-                minumanDalamKeranjang[1] = keranjang[1];
-            }
-        }
-        if (keranjang[2] != null && keranjang[2].menu.getKategoriMenu() == Kategori.MINUMAN) {
-            if (minumanDalamKeranjang[0] == null) {
-                minumanDalamKeranjang[0] = keranjang[2];
-            } else if (minumanDalamKeranjang[1] == null) {
-                minumanDalamKeranjang[1] = keranjang[2];
-            } else {
-                minumanDalamKeranjang[2] = keranjang[2];
-            }
-        }
-        if (keranjang[3] != null && keranjang[3].menu.getKategoriMenu() == Kategori.MINUMAN) {
-            if (minumanDalamKeranjang[0] == null) {
-                minumanDalamKeranjang[0] = keranjang[3];
-            } else if (minumanDalamKeranjang[1] == null) {
-                minumanDalamKeranjang[1] = keranjang[3];
-            } else if (minumanDalamKeranjang[2] == null) {
-                minumanDalamKeranjang[2] = keranjang[3];
-            } else {
-                minumanDalamKeranjang[3] = keranjang[3];
-            }
-        }
-
-        if (minumanDalamKeranjang[0] == null && minumanDalamKeranjang[1] == null && minumanDalamKeranjang[2] == null
-                && minumanDalamKeranjang[3] == null)
-            return;
-
-        tampilkanMenuBogo(minumanDalamKeranjang);
-        int pilihanGratis = pilihGratisan(scanner, minumanDalamKeranjang);
-        minumanDalamKeranjang[pilihanGratis].jumlahGratis++;
-    }
-
-    /**
-     * Method ini digunakan untuk meminta input user untuk memilih menu gratisan.
-     */
-    private static int pilihGratisan(Scanner scanner, Pesanan[] minumanDalamKeranjang) {
-        System.out.print("Masukkan nomor menu yang ingin Anda dapatkan gratis (1-4): ");
-        int pilihanGratis = 0;
-        boolean validInput = false;
-
-        while (!validInput) {
-            if (!scanner.hasNextInt()) {
-                System.out.print("Input tidak valid. Masukkan nomor menu (1-4): ");
-                scanner.next();
-                continue;
-            }
-
-            pilihanGratis = scanner.nextInt();
-            if (pilihanGratis < 1 || pilihanGratis > 4) {
-                System.out.print("Input tidak valid. Masukkan nomor menu (1-4): ");
-                continue;
-            }
-            if (minumanDalamKeranjang[pilihanGratis - 1] == null) {
-                System.out.print("Slot menu tersebut kosong. Masukkan nomor menu (1-4): ");
-                continue;
-            }
-            if (minumanDalamKeranjang[pilihanGratis - 1].menu.getKategoriMenu() != Kategori.MINUMAN) {
-                System.out.print("Menu tersebut bukan minuman. Masukkan nomor menu (1-4): ");
-                continue;
-            }
-            validInput = true;
-        }
-        return pilihanGratis - 1;
-    }
-
-    /**
-     * Method ini digunakan untuk menampilkan menu yang bisa dipilih untuk claim
-     * promo BOGO.
-     */
-    private static void tampilkanMenuBogo(Pesanan[] minumanDalamKeranjang) {
-        System.out.println(
-                "Selamat! Anda mendapatkan promo BOGO untuk minuman. Silahkan pilih minuman yang ada di keranjang yang ingin Anda dapatkan gratis:");
+    private static void renderDaftarMenu(Menu[] targetArray, String namaKategori) {
+        System.out.println("\n=== DAFTAR MENU " + namaKategori + " ===");
         System.out.println("!----------------------------------------------------!");
 
-        if (minumanDalamKeranjang[0] != null && minumanDalamKeranjang[0].menu.getKategoriMenu() == Kategori.MINUMAN)
-            System.out.println("1. " + minumanDalamKeranjang[0].menu.getNamaMenu());
-        if (minumanDalamKeranjang[1] != null && minumanDalamKeranjang[1].menu.getKategoriMenu() == Kategori.MINUMAN)
-            System.out.println("2. " + minumanDalamKeranjang[1].menu.getNamaMenu());
-        if (minumanDalamKeranjang[2] != null && minumanDalamKeranjang[2].menu.getKategoriMenu() == Kategori.MINUMAN)
-            System.out.println("3. " + minumanDalamKeranjang[2].menu.getNamaMenu());
-        if (minumanDalamKeranjang[3] != null && minumanDalamKeranjang[3].menu.getKategoriMenu() == Kategori.MINUMAN)
-            System.out.println("4. " + minumanDalamKeranjang[3].menu.getNamaMenu());
-
-        System.out.println("!----------------------------------------------------!");
-    }
-
-    /**
-     * Perhitungan diskon dibikin dengan paradigma functional programming.
-     */
-    private static long hitungDiskon(int DISKON1, long DISKON1_MIN, long SUBTOTAL) {
-        if (SUBTOTAL <= DISKON1_MIN)
-            return 0;
-        return SUBTOTAL * DISKON1 / 100;
-
-    }
-
-    /**
-     * Perhitungan pajak dibikin dengan paradigma functional programming.
-     */
-    private static long hitungPajak(int PAJAK, long SUBTOTAL) {
-        return SUBTOTAL * PAJAK / 100;
-    }
-
-    private static void prosesPerhitunganDanCetakStruk(Scanner scanner, Pesanan[] keranjang, int DISKON1,
-            long DISKON1_MIN, long BIAYA_LAYANAN, int PAJAK, long BOGO_MIN) {
-            
-        final long SUBTOTAL = hitungSubtotal(keranjang);
-        long nilaiMurniTransaksi = SUBTOTAL;
-        
-        long nominalDiskon = hitungDiskon(DISKON1, DISKON1_MIN, SUBTOTAL);
-        if (nominalDiskon > 0) {
-            nilaiMurniTransaksi -= nominalDiskon; 
+        int nomor = 1;
+        for (Menu menu : targetArray) {
+            System.out.printf("%d. %-28s : Rp %,d\n", nomor, menu.getNamaMenu(), menu.getHargaMenu());
+            nomor++;
         }
-            
-        
-        long dasarPengenaanPajak = nilaiMurniTransaksi + BIAYA_LAYANAN; 
-        long nominalPajak = hitungPajak(PAJAK, dasarPengenaanPajak);
-        long totalAkhir = dasarPengenaanPajak + nominalPajak;
 
-        promoBogo(scanner, BOGO_MIN, SUBTOTAL, keranjang);
-
-        tampilkanStruk(keranjang, SUBTOTAL, nominalDiskon, nominalPajak, BIAYA_LAYANAN, 
-                       nilaiMurniTransaksi, dasarPengenaanPajak, totalAkhir);
-    }
-
-    private static void tampilkanStruk(Pesanan[] keranjang, long SUBTOTAL, long nominalDiskon, long nominalPajak,
-            long BIAYA_LAYANAN, long nilaiMurniTransaksi, long dasarPengenaanPajak, long totalAkhir) {
-            
-        System.out.println("\nStruk Pesanan:");
-        System.out.println("!----------------------------------------------------!");
-        
-        // Lempar parameter TRUE agar "Subtotal" per menu tidak nge-spam di dalam struk
-        tampilkanKeranjang(keranjang, true);
-        
-        // Alignment \t diratakan pada ketukan ke-32 (biar lurus sempurna kayak print kasir)
-        System.out.println("Subtotal\t\t\t: Rp " + SUBTOTAL);
-        System.out.println("Diskon\t\t\t\t: - Rp " + nominalDiskon);
-        System.out.println("Nilai Transaksi Murni\t\t: Rp " + nilaiMurniTransaksi);
-        System.out.println("Biaya Layanan\t\t\t: + Rp " + BIAYA_LAYANAN);
-        System.out.println("Dasar Pengenaan Pajak\t\t: Rp " + dasarPengenaanPajak);
-        System.out.println("Pajak\t\t\t\t: + Rp " + nominalPajak);
-        System.out.println("!----------------------------------------------------!");
-        System.out.println("Total Akhir\t\t\t: Rp " + totalAkhir);
         System.out.println("!----------------------------------------------------!");
     }
 }

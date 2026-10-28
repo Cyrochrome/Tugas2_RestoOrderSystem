@@ -7,11 +7,11 @@ public class Keranjang {
         this.daftarPesanan = new Pesanan[0];
     }
 
-    public Pesanan[] lihatDaftarPesanan() {
+    public Pesanan[] getDaftarPesanan() {
         return this.daftarPesanan;
     }
 
-    public Pesanan lihatPesananByIndex(int index) {
+    public Pesanan getPesananByIndex(int index) {
         if (index < 0 || index >= this.daftarPesanan.length) {
             return null;
         }
@@ -30,6 +30,38 @@ public class Keranjang {
             subtotal += pesanan.hitungTotalHarga();
         }
         return subtotal;
+    }
+
+    public void renderKeranjang(boolean isStruk) {
+        System.out.println("\n=== KERANJANG PESANAN ===");
+        System.out.println("!----------------------------------------------------!");
+
+        if (this.daftarPesanan.length == 0) {
+            System.out.println("Keranjang Anda masih kosong.");
+            System.out.println("!----------------------------------------------------!");
+            return;
+        }
+
+        int nomor = 1;
+        for (Pesanan pesanan : this.daftarPesanan) {
+
+            System.out.println(nomor + ". " + pesanan.menu.getNamaMenu());
+
+            System.out.println("\tHarga Total: Rp " + pesanan.menu.getHargaMenu()
+                    + " * " + pesanan.jumlah + " : Rp " + pesanan.hitungTotalHarga());
+
+            if (pesanan.jumlahGratis > 0) {
+                System.out.println("\t(Gratis BOGO: " + pesanan.jumlahGratis + " item)");
+            }
+            nomor++;
+        }
+
+        System.out.println("!----------------------------------------------------!");
+
+        if (!isStruk) {
+            System.out.println("Subtotal Sementara: Rp " + hitungSubtotal());
+            System.out.println("!----------------------------------------------------!");
+        }
     }
 
     public void kosongkanKeranjang() {

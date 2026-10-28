@@ -15,11 +15,35 @@ public class PengelolaMenu {
         this.daftarMenu[7] = new Menu("Iced Cappuccino", 17000, Kategori.MINUMAN);
     }
 
-    public Menu[] lihatDaftarMenu() {
+    
+    public Menu[] getDaftarMenu() {
         return this.daftarMenu;
     }
 
-    public Menu lihatMenuByIndex(int index) {
+    
+    public Menu[] getDaftarMenuByKategori(Kategori kategori) {
+        
+        int count = 0;
+        for (Menu menu : this.daftarMenu) {
+            if (menu.getKategoriMenu() == kategori) {
+                count++;
+            }
+        }
+        
+        Menu[] menuFiltered = new Menu[count];
+        
+        int index = 0;
+        for (Menu menu : this.daftarMenu) {
+            if (menu.getKategoriMenu() == kategori) {
+                menuFiltered[index] = menu;
+                index++;
+            }
+        }
+
+        return menuFiltered;
+    }
+
+    public Menu getMenuByIndex(int index) {
         if (index < 0 || index >= this.daftarMenu.length) {
             return null;
         }
@@ -52,25 +76,25 @@ public class PengelolaMenu {
             this.index = index;
         }
 
-        public MenuUpdater denganNama(String nama) {
+        public MenuUpdater setNamaMenu(String nama) {
             this.nama = nama;
             return this;
         }
 
-        public MenuUpdater denganHarga(long harga) {
+        public MenuUpdater setHargaMenu(long harga) {
             this.harga = harga;
             return this;
         }
 
-        public MenuUpdater denganKategori(Kategori kategori) {
+        public MenuUpdater setKategoriMenu(Kategori kategori) {
             this.kategori = kategori;
             return this;
         }
 
         // Method eksekusi akhir untuk menyimpan perubahan
-        public void simpan() {
+        public void save() {
             Menu menuTarget = daftarMenu[index];
-            
+
             if (this.nama != null) {
                 menuTarget.setNamaMenu(this.nama);
             }
@@ -84,12 +108,14 @@ public class PengelolaMenu {
     }
 
     public void hapusMenu(int index) {
-        if (index < 0 || index >= daftarMenu.length) return;
-        
+        if (index < 0 || index >= daftarMenu.length)
+            return;
+
         Menu[] daftarMenuBaru = new Menu[daftarMenu.length - 1];
         int k = 0;
         for (int i = 0; i < daftarMenu.length; i++) {
-            if (i == index) continue; // Lewati indeks yang dihapus
+            if (i == index)
+                continue; // Lewati indeks yang dihapus
             daftarMenuBaru[k++] = daftarMenu[i];
         }
         this.daftarMenu = daftarMenuBaru;
