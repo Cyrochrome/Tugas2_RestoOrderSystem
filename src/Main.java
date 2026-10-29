@@ -26,11 +26,11 @@ public class Main {
                     prosesPelanggan(scanner, pengelolaMenu);
                     break;
                 case "2":
-
+                    prosesAdmin(scanner, pengelolaMenu);
                     break;
                 case "3":
                     System.out.println("Mematikan sistem... Terima kasih!");
-                    isAplikasiJalan = false; // Memutus loop utama
+                    isAplikasiJalan = false;
                     break;
                 default:
                     System.out.println("Input tidak valid! Silakan pilih 1, 2, atau 3.");
@@ -73,9 +73,10 @@ public class Main {
                 System.out.println(
                         "Selamat! Anda mendapatkan promo BOGO untuk minuman. Silahkan pilih minuman yang ada di keranjang yang ingin Anda dapatkan gratis:");
                 System.out.println("!----------------------------------------------------!");
-                int nomor = 0;
+                int nomor = 1;
                 for (Pesanan pesanan : daftarPesananMinuman) {
                     System.out.println(nomor + ". " + pesanan.getMenu().getNamaMenu());
+                    nomor++;
                 }
                 System.out.println("!----------------------------------------------------!");
             }
@@ -256,10 +257,28 @@ public class Main {
 
         int nomor = 1;
         for (Menu menu : targetArray) {
-            System.out.printf("%d. %-28s : Rp %,d\n", nomor, menu.getNamaMenu(), menu.getHargaMenu());
+            System.out.println(nomor + ". " + menu.getNamaMenu());
+            System.out.println("\tHarga : Rp " + menu.getHargaMenu());
             nomor++;
         }
 
+        System.out.println("!----------------------------------------------------!");
+    }
+
+    private static void renderDaftarMenuGlobal(PengelolaMenu pengelolaMenu) {
+        System.out.println("\n=== DAFTAR KESELURUHAN MENU (GLOBAL) ===");
+        System.out.println("!----------------------------------------------------!");
+
+        Menu[] semuaMenu = pengelolaMenu.getDaftarMenu();
+        if (semuaMenu.length == 0) {
+            System.out.println("Daftar Menu Kosong!");
+        } else {
+            for (int i = 0; i < semuaMenu.length; i++) {
+                System.out
+                        .println((i + 1) + ". [" + semuaMenu[i].getKategoriMenu() + "] " + semuaMenu[i].getNamaMenu());
+                System.out.println("\tHarga : Rp " + semuaMenu[i].getHargaMenu());
+            }
+        }
         System.out.println("!----------------------------------------------------!");
     }
 
@@ -298,30 +317,175 @@ public class Main {
 
                 switch (pilihanAdmin) {
                     case "1":
-                        renderDaftarMenu(pengelolaMenu.getDaftarMenuByKategori(Kategori.MAKANAN), "MAKANAN");
-                        System.out.println("!----------------------------------------------------!");
-                        renderDaftarMenu(pengelolaMenu.getDaftarMenuByKategori(Kategori.MINUMAN), "MINUMAN");
+                        // Lihat Menu pakai Global View
+                        renderDaftarMenuGlobal(pengelolaMenu);
                         break;
 
                     case "2":
-                        // TODO: Minta input Nama, Harga, dan Kategori
-                        // Lalu panggil: pengelolaMenu.tambahMenu(...)
+                        System.out.println("\n--- TAMBAH MENU BARU ---");
+                        System.out.print("Masukkan Nama Menu: ");
+                        String namaBaru = scanner.nextLine();
+
+                        long hargaBaru = 0;
+                        boolean isHargaValid = false;
+                        while (!isHargaValid) {
+                            System.out.print("Masukkan Harga Menu: ");
+                            if (!scanner.hasNextLong()) {
+                                System.out.println("Error: Masukkan angka!");
+                                scanner.next();
+                                continue;
+                            }
+                            hargaBaru = scanner.nextLong();
+                            if (hargaBaru <= 0) {
+                                System.out.println("Error: Harga harus lebih dari 0!");
+                                continue;
+                            }
+                            isHargaValid = true;
+                        }
+                        scanner.nextLine();
+
+                        int pilKategori = 0;
+                        boolean isKatValid = false;
+                        while (!isKatValid) {
+                            System.out.print("Pilih Kategori (1. MAKANAN / 2. MINUMAN): ");
+                            if (!scanner.hasNextInt()) {
+                                System.out.println("Error: Masukkan angka 1 atau 2!");
+                                scanner.next();
+                                continue;
+                            }
+                            pilKategori = scanner.nextInt();
+                            if (pilKategori != 1 && pilKategori != 2) {
+                                System.out.println("Error: Pilihan tidak valid!");
+                                continue;
+                            }
+                            isKatValid = true;
+                        }
+                        scanner.nextLine();
+
+                        Kategori katBaru = (pilKategori == 1) ? Kategori.MAKANAN : Kategori.MINUMAN;
+                        pengelolaMenu.tambahMenu(namaBaru, hargaBaru, katBaru);
+                        System.out.println(">> Menu '" + namaBaru + "' berhasil ditambahkan!");
                         break;
 
                     case "3":
-                        // TODO: Minta nomor menu yang mau diubah
-                        // Minta input Harga/Nama baru
-                        // Eksekusi pakai Builder Pattern andalan lu:
-                        // pengelolaMenu.updateMenu(indexTarget).setHargaMenu(hargaBaru).save();
+                        System.out.println("\n--- UBAH MENU ---");
+                        renderDaftarMenuGlobal(pengelolaMenu);
+                        Menu[] daftarUntukUpdate = pengelolaMenu.getDaftarMenu();
+
+                        if (daftarUntukUpdate.length == 0)
+                            break;
+
+                        int targetUpdate = 0;
+                        boolean isUpdateValid = false;
+                        while (!isUpdateValid) {
+                            System.out
+                                    .print("Pilih nomor menu yang akan diubah (1-" + daftarUntukUpdate.length + "): ");
+                            if (!scanner.hasNextInt()) {
+                                System.out.println("Error: Masukkan angka!");
+                                scanner.next();
+                                continue;
+                            }
+                            targetUpdate = scanner.nextInt();
+                            if (targetUpdate < 1 || targetUpdate > daftarUntukUpdate.length) {
+                                System.out.println("Error: Pilihan di luar rentang!");
+                                continue;
+                            }
+                            isUpdateValid = true;
+                        }
+                        scanner.nextLine();
+
+                        // Builder Pattern
+                        PengelolaMenu.MenuUpdater updater = pengelolaMenu.updateMenu(targetUpdate - 1);
+
+                        System.out.println("\n*Petunjuk: Kosongkan/ketik 0 jika tidak ingin mengubah data tertentu.");
+
+                        System.out.print("Nama Baru (Kosongkan jika tetap): ");
+                        String namaUbah = scanner.nextLine();
+                        if (!namaUbah.trim().isEmpty()) {
+                            updater.setNamaMenu(namaUbah);
+                        }
+
+                        long hargaUbah = -1;
+                        boolean isHargaUbahValid = false;
+                        while (!isHargaUbahValid) {
+                            System.out.print("Harga Baru (Ketik 0 jika tetap): ");
+                            if (!scanner.hasNextLong()) {
+                                System.out.println("Error: Masukkan angka!");
+                                scanner.next();
+                                continue;
+                            }
+                            hargaUbah = scanner.nextLong();
+                            if (hargaUbah < 0) {
+                                System.out.println("Error: Harga tidak boleh negatif!");
+                                continue;
+                            }
+                            isHargaUbahValid = true;
+                        }
+                        scanner.nextLine();
+
+                        if (hargaUbah > 0)
+                            updater.setHargaMenu(hargaUbah);
+
+                        int katUbah = -1;
+                        boolean isKatUbahValid = false;
+                        while (!isKatUbahValid) {
+                            System.out.print("Kategori Baru (1. MAKANAN / 2. MINUMAN / 0. Tetap): ");
+                            if (!scanner.hasNextInt()) {
+                                System.out.println("Error: Masukkan angka!");
+                                scanner.next();
+                                continue;
+                            }
+                            katUbah = scanner.nextInt();
+                            if (katUbah != 0 && katUbah != 1 && katUbah != 2) {
+                                System.out.println("Error: Pilihan tidak valid!");
+                                continue;
+                            }
+                            isKatUbahValid = true;
+                        }
+                        scanner.nextLine();
+
+                        if (katUbah == 1)
+                            updater.setKategoriMenu(Kategori.MAKANAN);
+                        else if (katUbah == 2)
+                            updater.setKategoriMenu(Kategori.MINUMAN);
+
+                        updater.save();
+                        System.out.println(">> Data menu ke-" + targetUpdate + " berhasil diperbarui!");
                         break;
 
                     case "4":
-                        // TODO: Minta nomor menu
-                        // Eksekusi: pengelolaMenu.hapusMenu(indexTarget)
+                        System.out.println("\n--- HAPUS MENU ---");
+                        renderDaftarMenuGlobal(pengelolaMenu);
+                        Menu[] menuSekarang = pengelolaMenu.getDaftarMenu();
+
+                        if (menuSekarang.length == 0)
+                            break;
+
+                        int targetHapus = 0;
+                        boolean isHapusValid = false;
+                        while (!isHapusValid) {
+                            System.out.print("Masukkan nomor menu yang akan dihapus (1-" + menuSekarang.length + "): ");
+                            if (!scanner.hasNextInt()) {
+                                System.out.println("Error: Masukkan angka!");
+                                scanner.next();
+                                continue;
+                            }
+                            targetHapus = scanner.nextInt();
+                            if (targetHapus < 1 || targetHapus > menuSekarang.length) {
+                                System.out.println("Error: Pilihan di luar rentang!");
+                                continue;
+                            }
+                            isHapusValid = true;
+                        }
+                        scanner.nextLine();
+
+                        String namaDihapus = menuSekarang[targetHapus - 1].getNamaMenu();
+                        pengelolaMenu.hapusMenu(targetHapus - 1);
+                        System.out.println(">> Menu '" + namaDihapus + "' berhasil dilempar ke originium dust!");
                         break;
 
                     case "5":
-                        System.out.println("Keluar dari Panel Admin...");
+                        System.out.println("Meninggalkan Panel Endmin...");
                         isAdminJalan = false; // Memutus loop admin, balik ke Main Menu
                         break;
 
@@ -330,7 +494,8 @@ public class Main {
                         break;
                 }
             }
-        }
+        } else
+            System.out.println("Verifikaisi gagal! Anda dilarang masuk!~~~");
     }
     // !-----------------------------------------------------------------------------!
 
