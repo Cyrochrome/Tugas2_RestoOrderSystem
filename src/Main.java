@@ -227,19 +227,6 @@ public class Main {
         }
     }
 
-    private static void renderDaftarMenu(Menu[] targetArray, String namaKategori) {
-        System.out.println("\n=== DAFTAR MENU " + namaKategori + " ===");
-        System.out.println("!----------------------------------------------------!");
-
-        int nomor = 1;
-        for (Menu menu : targetArray) {
-            System.out.printf("%d. %-28s : Rp %,d\n", nomor, menu.getNamaMenu(), menu.getHargaMenu());
-            nomor++;
-        }
-
-        System.out.println("!----------------------------------------------------!");
-    }
-
     private static void renderStruk(Keranjang keranjang, long SUBTOTAL, long nominalDiskon,
             long BIAYA_LAYANAN, long nilaiMurniTransaksi, long dasarPengenaanPajak,
             long nominalPajak, long totalAkhir) {
@@ -262,6 +249,19 @@ public class Main {
         System.out.println("=====================================================");
     }
     // !-----------------------------------------------------------------------------!
+
+    private static void renderDaftarMenu(Menu[] targetArray, String namaKategori) {
+        System.out.println("\n=== DAFTAR MENU " + namaKategori + " ===");
+        System.out.println("!----------------------------------------------------!");
+
+        int nomor = 1;
+        for (Menu menu : targetArray) {
+            System.out.printf("%d. %-28s : Rp %,d\n", nomor, menu.getNamaMenu(), menu.getHargaMenu());
+            nomor++;
+        }
+
+        System.out.println("!----------------------------------------------------!");
+    }
 
     // !-----------------------------------------------------------------------------!
     // Menu Admin
@@ -298,8 +298,8 @@ public class Main {
 
                 switch (pilihanAdmin) {
                     case "1":
-                        // TODO: Panggil renderDaftarMenu secara global (semua kategori)
                         renderDaftarMenu(pengelolaMenu.getDaftarMenuByKategori(Kategori.MAKANAN), "MAKANAN");
+                        System.out.println("!----------------------------------------------------!");
                         renderDaftarMenu(pengelolaMenu.getDaftarMenuByKategori(Kategori.MINUMAN), "MINUMAN");
                         break;
 
