@@ -1,5 +1,13 @@
 import java.util.Scanner;
 
+// Nama                : Marshalinas Yustiawan     
+
+// NIM                 : 052817663
+
+// Program studi       : Sistem Informasi
+
+// Mata kuliah         : Pemrograman Berbasis Desktop
+
 public class Main {
     public static void main(String[] args) {
         boolean isAplikasiJalan = true;
