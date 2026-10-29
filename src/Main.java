@@ -40,6 +40,9 @@ public class Main {
         scanner.close();
     }
 
+    // !-----------------------------------------------------------------------------!
+    // Menu Pelanngan
+
     public static void prosesPelanggan(Scanner scanner, PengelolaMenu pengelolaMenu) {
         Keranjang keranjang = new Keranjang();
 
@@ -258,4 +261,23 @@ public class Main {
         System.out.println("Total Akhir\t\t\t: Rp " + totalAkhir);
         System.out.println("=====================================================");
     }
+    // !-----------------------------------------------------------------------------!
+
+    // !-----------------------------------------------------------------------------!
+    // Menu Admin
+
+    public static void prosesAdmin(Scanner scanner, PengelolaMenu pengelolaMenu){
+        System.out.println("Selamat Datang di Panel Endmin Cafe Atas Tebing!~~~");
+        System.out.println("Silahkan buktikan identitas anda wahai pengunjung!~~~");
+
+        
+
+
+        System.out.println("Selamat Datang Endmin Tercinta di Cafe Atas Tebing!~~~");
+        System.out.println("Perbubahan apa yang akan lakukn hari ini?~~~ :)");
+
+
+    }
+    // !-----------------------------------------------------------------------------!
+
 }
