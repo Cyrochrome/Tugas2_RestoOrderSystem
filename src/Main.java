@@ -266,17 +266,71 @@ public class Main {
     // !-----------------------------------------------------------------------------!
     // Menu Admin
 
-    public static void prosesAdmin(Scanner scanner, PengelolaMenu pengelolaMenu){
-        System.out.println("Selamat Datang di Panel Endmin Cafe Atas Tebing!~~~");
+    public static void prosesAdmin(Scanner scanner, PengelolaMenu pengelolaMenu) {
+        System.out.println("Selamat Datang di Panel Admin Cafe Atas Tebing!~~~");
         System.out.println("Silahkan buktikan identitas anda wahai pengunjung!~~~");
 
-        
+        System.out.print("Username : ");
+        String username = scanner.nextLine();
 
+        System.out.print("Password : ");
+        String password = scanner.nextLine();
 
-        System.out.println("Selamat Datang Endmin Tercinta di Cafe Atas Tebing!~~~");
-        System.out.println("Perbubahan apa yang akan lakukn hari ini?~~~ :)");
+        if (username.equals("endmin") && password.equals("endminthebest")) {
 
+            System.out.println("Selamat Datang Endmin Tercinta di Cafe Atas Tebing!~~~");
+            System.out.println("Perbubahan apa yang akan lakukn hari ini?~~~ :)");
 
+            boolean isAdminJalan = true;
+
+            while (isAdminJalan) {
+                System.out.println("\n=== PANEL ADMIN ===");
+                System.out.println("!----------------------------------------------------!");
+                System.out.println("1. Lihat Daftar Menu");
+                System.out.println("2. Tambah Menu Baru");
+                System.out.println("3. Ubah Menu");
+                System.out.println("4. Hapus Menu");
+                System.out.println("5. Kembali ke Menu Utama");
+                System.out.println("!----------------------------------------------------!");
+                System.out.print("Pilih aksi (1-5): ");
+
+                String pilihanAdmin = scanner.nextLine();
+
+                switch (pilihanAdmin) {
+                    case "1":
+                        // TODO: Panggil renderDaftarMenu secara global (semua kategori)
+                        renderDaftarMenu(pengelolaMenu.getDaftarMenuByKategori(Kategori.MAKANAN), "MAKANAN");
+                        renderDaftarMenu(pengelolaMenu.getDaftarMenuByKategori(Kategori.MINUMAN), "MINUMAN");
+                        break;
+
+                    case "2":
+                        // TODO: Minta input Nama, Harga, dan Kategori
+                        // Lalu panggil: pengelolaMenu.tambahMenu(...)
+                        break;
+
+                    case "3":
+                        // TODO: Minta nomor menu yang mau diubah
+                        // Minta input Harga/Nama baru
+                        // Eksekusi pakai Builder Pattern andalan lu:
+                        // pengelolaMenu.updateMenu(indexTarget).setHargaMenu(hargaBaru).save();
+                        break;
+
+                    case "4":
+                        // TODO: Minta nomor menu
+                        // Eksekusi: pengelolaMenu.hapusMenu(indexTarget)
+                        break;
+
+                    case "5":
+                        System.out.println("Keluar dari Panel Admin...");
+                        isAdminJalan = false; // Memutus loop admin, balik ke Main Menu
+                        break;
+
+                    default:
+                        System.out.println("Error: Pilihan tidak valid!");
+                        break;
+                }
+            }
+        }
     }
     // !-----------------------------------------------------------------------------!
 
