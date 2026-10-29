@@ -59,12 +59,54 @@ public class Main {
         long nominalDiskon = SUBTOTAL > DISKON1_MIN ? SUBTOTAL * DISKON1 / 100 : 0;
         nilaiMurniTransaksi -= nominalDiskon;
 
-        long dasarPengenaanPajak = nilaiMurniTransaksi + BIAYA_LAYANAN; 
-        long nominalPajak = SUBTOTAL * PAJAK / 100;
+        long dasarPengenaanPajak = nilaiMurniTransaksi + BIAYA_LAYANAN;
+        long nominalPajak = dasarPengenaanPajak * PAJAK / 100;
         long totalAkhir = dasarPengenaanPajak + nominalPajak;
 
-        
+        if (SUBTOTAL > BOGO_MIN) {
+            Pesanan[] daftarPesananMinuman = keranjang.getDaftarPesananByKategori(Kategori.MINUMAN);
 
+            if (daftarPesananMinuman.length > 0) {
+                System.out.println(
+                        "Selamat! Anda mendapatkan promo BOGO untuk minuman. Silahkan pilih minuman yang ada di keranjang yang ingin Anda dapatkan gratis:");
+                System.out.println("!----------------------------------------------------!");
+                int nomor = 0;
+                for (Pesanan pesanan : daftarPesananMinuman) {
+                    System.out.println(nomor + ". " + pesanan.getMenu().getNamaMenu());
+                }
+                System.out.println("!----------------------------------------------------!");
+            }
+
+            int pilihan = 0;
+            boolean isBogoValid = false;
+
+            while (!isBogoValid) {
+                System.out.print("Silahkan pilih Menu (1-" + daftarPesananMinuman.length + "): ");
+
+                if (!scanner.hasNextInt()) {
+                    System.out.println("Error: Masukkan angka!");
+                    scanner.next(); // Buang input ampas
+                    continue;
+                }
+
+                pilihan = scanner.nextInt();
+
+                // Validasi batas rentang dinamis
+                if (pilihan < 1 || pilihan > daftarPesananMinuman.length) {
+                    System.out.println("Error: Pilihan di luar rentang!");
+                    continue;
+                }
+                isBogoValid = true;
+            }
+            scanner.nextLine(); // Sapu sisa "Enter" dari nextInt()
+
+            daftarPesananMinuman[pilihan - 1].setJumlahGratis(1);
+        }
+
+        renderStruk(keranjang, SUBTOTAL, nominalDiskon, BIAYA_LAYANAN,
+                nilaiMurniTransaksi, dasarPengenaanPajak, nominalPajak, totalAkhir);
+
+        System.out.println("\nTerima kasih telah memesan di Cafe Atas Tebing! Silakan datang kembali.");
     }
 
     private static void prosesInputMenu(Scanner scanner, PengelolaMenu pengelolaMenu, Keranjang keranjang) {
@@ -193,5 +235,27 @@ public class Main {
         }
 
         System.out.println("!----------------------------------------------------!");
+    }
+
+    private static void renderStruk(Keranjang keranjang, long SUBTOTAL, long nominalDiskon,
+            long BIAYA_LAYANAN, long nilaiMurniTransaksi, long dasarPengenaanPajak,
+            long nominalPajak, long totalAkhir) {
+
+        System.out.println("\n=================== STRUK PESANAN ===================");
+
+        // Panggil renderKeranjang dengan parameter TRUE agar tulisan "Subtotal
+        // Sementara" disembunyikan
+        keranjang.renderKeranjang(true);
+
+        // Alignment \t diratakan biar lurus sempurna kayak print kasir beneran
+        System.out.println("Subtotal\t\t\t: Rp " + SUBTOTAL);
+        System.out.println("Diskon\t\t\t\t: - Rp " + nominalDiskon);
+        System.out.println("Nilai Transaksi Murni\t\t: Rp " + nilaiMurniTransaksi);
+        System.out.println("Biaya Layanan\t\t\t: + Rp " + BIAYA_LAYANAN);
+        System.out.println("Dasar Pengenaan Pajak\t\t: Rp " + dasarPengenaanPajak);
+        System.out.println("Pajak\t\t\t\t: + Rp " + nominalPajak);
+        System.out.println("!----------------------------------------------------!");
+        System.out.println("Total Akhir\t\t\t: Rp " + totalAkhir);
+        System.out.println("=====================================================");
     }
 }
